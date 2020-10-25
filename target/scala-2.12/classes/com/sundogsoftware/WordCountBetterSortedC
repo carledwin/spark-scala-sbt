@@ -1,0 +1,32 @@
+package com.sundogsoftware
+
+import org.apache.spark._
+import org.apache.log4j._
+
+object WordCountBetterSortedC {
+
+  def main(args: Array[String]) {
+
+    Logger.getLogger("org").setLevel(Level.ERROR)
+
+    val sc = new SparkContext("local[*]", "WordCountBetterSortedC")
+
+    val inputTextRdd = sc.textFile("data/book.txt")
+
+    val words = inputTextRdd.flatMap(l => l.split("\\W+"))
+
+    val lowercaseWords = words.map(w => w.toLowerCase())
+
+    val wordCountsReduceByKey = lowercaseWords.map(w => (w,1)).reduceByKey((w,v) => w + v)
+
+    val wordCountsSorted = wordCountsReduceByKey.map(w => (w._2, w._1)).sortByKey()
+
+    for(result <- wordCountsSorted) {
+
+      val count = result._1
+      val word = result._2
+      println(s"$word: $count")
+    }
+
+  }
+}

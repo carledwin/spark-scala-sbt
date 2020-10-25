@@ -1,0 +1,3 @@
+Para executar a classe do jar do projeto via terminal
+>> cd ~
+>> spark-submit --class com.sundogsoftware.HelloWorld /home/ceti/curso-spark-with-scala/SparkScalaCourse/out/artifacts/SparkCourse_jar/SparkCourse.jar.jar
